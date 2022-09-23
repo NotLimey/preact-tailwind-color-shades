@@ -232,7 +232,9 @@ const Home = () => {
 			<div className='text-center py-6'>
 				<a
 					className='text-base text-blue-500 hover:text-blue-600 mb-3 inline-flex justify-center items-center gap-x-2'
-					href='https://github.com/NotLimey/preact-tailwind-color-shades'>
+					href='https://github.com/NotLimey/preact-tailwind-color-shades'
+					target='_blank'
+					rel='noreferrer'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
 						width='24'
