@@ -191,10 +191,14 @@ const Home = () => {
 											];
 											newColors.splice(colorIdx, 1);
 											setGeneratedColors(newColors);
+											toast('Color removed', {
+												icon: '🗑️',
+											});
 										}}
-										className='inline-flex items-center rounded-full border border-transparent bg-red-600 p-1.5 text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'>
+										className='inline-flex items-center rounded-full border border-transparent bg-red-600 p-1 text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'>
 										<XMarkIcon
-											className='h-5 w-5'
+											className='h-4 w-4'
+											strokeWidth={2}
 											aria-hidden='true'
 										/>
 									</button>
