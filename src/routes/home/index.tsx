@@ -124,7 +124,10 @@ const Home = () => {
 					Tailwind color shades generator
 				</h1>
 				<p className=' mb-12 text-gray-500 mt-1 text-center'>
-					Create shades of hex that works perfectly with tailwindcss!
+					Create shades of color that works perfectly with{' '}
+					<code className='bg-gray-100 px-1 py-0.5 rounded-md text-sm text-gray-600'>
+						Tailwindcss
+					</code>
 				</p>
 				<div className='mx-auto max-w-xl flex justify-center mb-8 items-center'>
 					<input
