@@ -115,7 +115,7 @@ const Home = () => {
 											key={idx}
 											className='flex flex-col'>
 											<div
-												className='w-full h-full aspect-square border rounded-md'
+												className='w-full h-full aspect-square border rounded-md overflow-hidden'
 												style={{
 													backgroundColor:
 														color.colors[hex],
