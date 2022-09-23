@@ -11,10 +11,20 @@ const Home = () => {
 
 	const handleEnter = () => {
 		// get color but remove all # and spaces
+		if (color.length === 0) {
+			return toast.error('Please enter a color');
+		}
 		const newColor = color.replace(/#/g, '').replace(/ /g, '');
+		if (!isHexColor(newColor)) {
+			return toast.error('Please enter a valid hex color');
+		}
 		const colors = generateColors(newColor);
 		if (colors) {
 			setGeneratedColors((prev) => [...prev, colors]);
+			toast('Color palette generated!', {
+				icon: '🎨',
+			});
+			setColor('');
 		}
 	};
 
@@ -123,6 +133,11 @@ const Home = () => {
 						onInput={(e) => setColor(e.currentTarget.value)}
 						placeholder='Enter a hex color'
 						value={color}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') {
+								handleEnter();
+							}
+						}}
 					/>
 					<button
 						type='button'
@@ -334,4 +349,12 @@ export function generateColors(baseColor: string): ColorPalette {
 	});
 
 	return response as ColorPalette;
+}
+
+function isHexColor(hex: string) {
+	return (
+		typeof hex === 'string' &&
+		hex.length === 6 &&
+		!isNaN(Number(`0x${hex}`))
+	);
 }
