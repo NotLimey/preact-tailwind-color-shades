@@ -21,7 +21,36 @@ const Home = () => {
 	const handleCopy = async (color: string) => {
 		if (navigator.clipboard && window.isSecureContext) {
 			// navigator clipboard api method'
-			return navigator.clipboard.writeText(color);
+			return navigator.clipboard
+				.writeText(color)
+				.then((res) => {
+					const responseText =
+						color.length < 10
+							? `Copied ${color} to clipboard`
+							: 'Copied to clipboard';
+					if (color.length === 7 && color.includes('#')) {
+						toast(() => (
+							<div className='flex gap-x-2 items-center'>
+								<div
+									className='h-5 w-5 rounded'
+									style={{ backgroundColor: color }}
+								/>
+								{responseText}
+							</div>
+						));
+					} else {
+						toast(responseText, {
+							icon: '👍',
+						});
+					}
+					return res;
+				})
+				.catch((err) => {
+					toast('Failed to copy to clipboard!', {
+						icon: '👎',
+					});
+					return err;
+				});
 		}
 		const textArea = document.createElement('textarea');
 		textArea.value = color;
@@ -41,7 +70,6 @@ const Home = () => {
 					color.length < 10
 						? `Copied ${color} to clipboard`
 						: 'Copied to clipboard';
-				console.log(responseText.length);
 				if (color.length === 7 && color.includes('#')) {
 					toast(() => (
 						<div className='flex gap-x-2 items-center'>
