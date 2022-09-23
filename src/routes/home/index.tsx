@@ -11,7 +11,9 @@ const Home = () => {
 	const [exportText, setExport] = useState('');
 
 	const handleEnter = () => {
-		const colors = generateColors(color);
+		// get color but remove all # and spaces
+		const newColor = color.replace(/#/g, '').replace(/ /g, '');
+		const colors = generateColors(newColor);
 		if (colors) {
 			setGeneratedColors((prev) => [...prev, colors]);
 		}
@@ -48,7 +50,10 @@ const Home = () => {
 	return (
 		<div className='w-full mx-5 min-h-screen'>
 			<div className='max-w-7xl mx-auto my-24'>
-				<div className='mx-auto max-w-xl flex justify-center mb-5 items-center'>
+				<h1 className='text-2xl text-center mb-12 font-bold lg:text-4xl'>
+					Tailwind color shades generator
+				</h1>
+				<div className='mx-auto max-w-xl flex justify-center mb-8 items-center'>
 					<input
 						type='text'
 						className='bg-white border-gray-300 border rounded-md shadow-sm py-1.5 px-3 w-full'
@@ -68,7 +73,7 @@ const Home = () => {
 						generatedColors.map((color, colorIdx) => (
 							<div
 								key={colorIdx}
-								className='grid grid-cols-11 grid-rows-1 gap-x-2'>
+								className='grid grid-cols-11 grid-rows-1 gap-x-1'>
 								{Object.keys(color.colors).map(
 									(hex: string, idx: number) => (
 										<div
