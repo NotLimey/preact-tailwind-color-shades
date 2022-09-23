@@ -119,7 +119,7 @@ const Home = () => {
 
 	return (
 		<div className='w-full px-5 min-h-screen max-w-full flex flex-col justify-between'>
-			<div className='max-w-7xl mx-auto my-24'>
+			<div className='max-w-6xl mx-auto my-24 w-full'>
 				<h1 className='text-2xl text-center font-bold lg:text-4xl'>
 					Tailwind color shades generator
 				</h1>
