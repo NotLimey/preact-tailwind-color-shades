@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { ntc } from '@cosmicice/namethatcolor';
+import toast from 'react-hot-toast';
 
 const Home = () => {
 	const [color, setColor] = useState('');
@@ -17,20 +18,13 @@ const Home = () => {
 		}
 	};
 
-	const handleExport = () => {
-		const exportColors = generatedColors.reduce((acc: any, curr) => {
-			acc[curr.name] = curr.colors;
-			return acc;
-		}, {});
-		const output = JSON.stringify(exportColors, null, 4);
-		setExport(output);
-
+	const handleCopy = async (color: string) => {
 		if (navigator.clipboard && window.isSecureContext) {
 			// navigator clipboard api method'
-			return navigator.clipboard.writeText(output);
+			return navigator.clipboard.writeText(color);
 		}
 		const textArea = document.createElement('textarea');
-		textArea.value = output;
+		textArea.value = color;
 		// make the textarea out of viewport
 		textArea.style.position = 'fixed';
 		textArea.style.left = '-999999px';
@@ -40,9 +34,49 @@ const Home = () => {
 		textArea.select();
 		return new Promise((res, rej) => {
 			// here the magic happens
-			document.execCommand('copy') ? res(true) : rej(false);
+			const execRes = document.execCommand('copy');
+			if (execRes) {
+				res('success');
+				const responseText =
+					color.length < 10
+						? `Copied ${color} to clipboard`
+						: 'Copied to clipboard';
+				console.log(responseText.length);
+				if (color.length === 7 && color.includes('#')) {
+					toast(() => (
+						<div className='flex gap-x-2 items-center'>
+							<div
+								className='h-5 w-5 rounded'
+								style={{ backgroundColor: color }}
+							/>
+							{responseText}
+						</div>
+					));
+				} else {
+					toast(responseText, {
+						icon: '👍',
+					});
+				}
+			} else {
+				rej('failed');
+				toast('Failed to copy to clipboard!', {
+					icon: '👎',
+				});
+			}
 			textArea.remove();
 		});
+	};
+
+	const handleExport = (copy = false) => {
+		const exportColors = generatedColors.reduce((acc: any, curr) => {
+			acc[curr.name] = curr.colors;
+			return acc;
+		}, {});
+		const output = JSON.stringify(exportColors, null, 4);
+		setExport(output);
+		if (copy) {
+			handleCopy(output);
+		}
 	};
 
 	return (
@@ -86,7 +120,13 @@ const Home = () => {
 													backgroundColor:
 														color.colors[hex],
 												}}>
-												<div className='w-full h-full opacity-0 bg-black/30 hover:opacity-100 flex justify-center items-center text-white font-mono uppercase'>
+												<div
+													className='w-full h-full opacity-0 bg-black/30 hover:opacity-100 flex justify-center items-center text-white font-mono uppercase cursor-pointer'
+													onClick={() =>
+														handleCopy(
+															color.colors[hex]
+														)
+													}>
 													{color.colors[hex]}
 												</div>
 											</div>
@@ -120,13 +160,13 @@ const Home = () => {
 					<div className='flex justify-center items-center mt-5'>
 						<button
 							type='button'
-							onClick={handleExport}
+							onClick={() => handleExport()}
 							className='inline-flex items-center rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'>
 							Export
 						</button>
 						<button
 							type='button'
-							onClick={handleExport}
+							onClick={() => handleExport(true)}
 							className='inline-flex ml-3 items-center rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'>
 							Copy tailwind config
 						</button>
