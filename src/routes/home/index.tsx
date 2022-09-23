@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ntc } from '@cosmicice/namethatcolor';
 
 const Home = () => {
 	const [color, setColor] = useState('');
@@ -204,8 +205,8 @@ function darken(hex: string, intensity: number): string {
 }
 
 export function getColorName(color: string): string {
-	const name = `#${color}`;
-	const sanitizedName = name
+	const col = ntc.name(`#${color.replace('##', '#')}`);
+	const sanitizedName = col.name
 		.replace(/['/]/gi, '')
 		.replace(/\s+/g, '-')
 		.toLowerCase();
