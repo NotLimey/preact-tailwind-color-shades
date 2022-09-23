@@ -5,9 +5,7 @@ import { ntc } from '@cosmicice/namethatcolor';
 
 const Home = () => {
 	const [color, setColor] = useState('');
-	const [generatedColors, setGeneratedColors] = useState<ColorPalette[]>([
-		generateColors('532345'),
-	]);
+	const [generatedColors, setGeneratedColors] = useState<ColorPalette[]>([]);
 	const [exportText, setExport] = useState('');
 
 	const handleEnter = () => {
@@ -48,11 +46,14 @@ const Home = () => {
 	};
 
 	return (
-		<div className='w-full mx-5 min-h-screen'>
+		<div className='w-full px-5 min-h-screen max-w-full'>
 			<div className='max-w-7xl mx-auto my-24'>
-				<h1 className='text-2xl text-center mb-12 font-bold lg:text-4xl'>
+				<h1 className='text-2xl text-center font-bold lg:text-4xl'>
 					Tailwind color shades generator
 				</h1>
+				<p className=' mb-12 text-gray-500 mt-1 text-center'>
+					Create shades of hex that works perfectly with tailwindcss!
+				</p>
 				<div className='mx-auto max-w-xl flex justify-center mb-8 items-center'>
 					<input
 						type='text'
@@ -78,15 +79,20 @@ const Home = () => {
 									(hex: string, idx: number) => (
 										<div
 											key={idx}
-											className='flex flex-col max-w-full max-wh-full'>
+											className='flex flex-col'>
 											<div
-												className='w-full h-full aspect-square border'
+												className='w-full h-full aspect-square border rounded-md'
 												style={{
 													backgroundColor:
 														color.colors[hex],
-												}}
-											/>
-											<p className='text-center'>{hex}</p>
+												}}>
+												<div className='w-full h-full opacity-0 bg-black/30 hover:opacity-100 flex justify-center items-center text-white font-mono uppercase'>
+													{color.colors[hex]}
+												</div>
+											</div>
+											<p className='text-center text-xs sm:text-sm md:text-base font-mono text-gray-700 py-2'>
+												{hex}
+											</p>
 										</div>
 									)
 								)}
@@ -110,14 +116,22 @@ const Home = () => {
 							</div>
 						))}
 				</div>
-				<div className='flex justify-center items-center mt-5'>
-					<button
-						type='button'
-						onClick={handleExport}
-						className='inline-flex items-center rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'>
-						Export
-					</button>
-				</div>
+				{generatedColors.length > 0 && (
+					<div className='flex justify-center items-center mt-5'>
+						<button
+							type='button'
+							onClick={handleExport}
+							className='inline-flex items-center rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'>
+							Export
+						</button>
+						<button
+							type='button'
+							onClick={handleExport}
+							className='inline-flex ml-3 items-center rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'>
+							Copy tailwind config
+						</button>
+					</div>
+				)}
 				{exportText.length > 0 && (
 					<div className='mt-5 bg-gray-100 rounded-md px-4 py-2 font-mono'>
 						{/* Show json string pretty */}
